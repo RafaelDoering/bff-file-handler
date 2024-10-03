@@ -1,8 +1,8 @@
 import jwt from 'jsonwebtoken';
 
-import Token from './token';
+import Token from '../../app/ports/token';
 
-export default class JsonWebToken implements Token {
+export default class JsonWebTokenAdapter implements Token {
   private key: string;
   private expiresIn: string;
 

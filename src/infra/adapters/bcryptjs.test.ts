@@ -1,8 +1,8 @@
-import Cryptography from './bcryptjs-cryptography';
+import BcryptjsAdapter from './bcryptjs';
 
 const STR = "test-string";
 
-const subject = new Cryptography();
+const subject = new BcryptjsAdapter();
 
 test('return true when hash is from string', async () => {
   const hash = await subject.hash(STR);

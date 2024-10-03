@@ -1,8 +1,8 @@
 import bcrypt from 'bcryptjs';
 
-import Cryptography from './cryptography';
+import Cryptography from '../../app/ports/cryptography';
 
-export default class BcryptjsCryptography implements Cryptography {
+export default class BcryptjsAdapter implements Cryptography {
   async hash(str: string): Promise<string> {
     const salt = await bcrypt.genSalt(10);
 

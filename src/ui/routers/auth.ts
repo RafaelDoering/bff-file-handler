@@ -1,18 +1,20 @@
 import { Router } from "express";
 
 import AuthController from '../controllers/auth';
-import SignupService from '../../app/services/signup';
-import LoginService from '../../app/services/login';
+import SignupService from '../../app/use-cases/signup';
+import LoginService from '../../app/use-cases/login';
 import UserRepository from '../../infra/repository/user';
-import BcryptjsCryptography from "../../utils/cryptography/bcryptjs-cryptography";
-import JsonWebToken from "../../utils/token/jsonwebtoken-token";
+import BcryptjsCryptography from "../../infra/adapters/bcryptjs";
+import JsonWebToken from "../../infra/adapters/jsonwebtoken";
+import UserToUserDto from "../converters/userToUserDto";
 
 const userRepository = new UserRepository();
 const cryptography = new BcryptjsCryptography();
 const token = new JsonWebToken('temporary-key', '1d');
-const loginService = new LoginService(userRepository, cryptography, token);
-const signupService = new SignupService(userRepository, cryptography, token);
-const authController = new AuthController(loginService, signupService);
+const userToUserDto = new UserToUserDto(token);
+const loginService = new LoginService(userRepository, cryptography);
+const signupService = new SignupService(userRepository, cryptography);
+const authController = new AuthController(loginService, signupService, userToUserDto);
 
 const router = Router();
 
