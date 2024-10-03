@@ -2,18 +2,19 @@ import UserNotFound from '../../domain/errors/userNotFound';
 import WrongPassword from '../../domain/errors/wrongPassword';
 import User from '../../domain/user';
 import Users from '../../domain/users';
-import Cryptography from '../ports/cryptography';
+import CryptographyPort from '../ports/cryptography';
 import LoginUseCase from './login';
 
 const usersMock = {
   findByEmail: jest.fn(),
+  findById: jest.fn(),
   create: jest.fn()
 } as jest.Mocked<Users>;
 
 const cryptographyMock = {
   hash: jest.fn(),
   compare: jest.fn()
-} as jest.Mocked<Cryptography>;
+} as jest.Mocked<CryptographyPort>;
 
 const subject = new LoginUseCase(usersMock, cryptographyMock);
 

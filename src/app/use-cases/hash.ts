@@ -1,7 +1,7 @@
-import Cryptography from "../ports/cryptography";
+import CryptographyPort from "../ports/cryptography";
 
 export default class HashUseCase {
-  constructor(private cryptography: Cryptography) { }
+  constructor(private cryptography: CryptographyPort) { }
 
   public async execute(str: string): Promise<string> {
     return this.cryptography.hash(str);

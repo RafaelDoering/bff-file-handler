@@ -1,16 +1,15 @@
-import type { Request, Response } from "express";
-
-import Login from "../../app/use-cases/login";
-import Signup from "../../app/use-cases/signup";
+import type { Request, Response } from "../http-client";
+import LoginUseCase from "../../app/use-cases/login";
+import SignupUseCase from "../../app/use-cases/signup";
 import UserToUserDto from "../converters/userToUserDto";
 
 export default class AuthController {
-  constructor(private loginService: Login, private signupService: Signup, private userToUserDto: UserToUserDto) { }
+  constructor(private loginUseCase: LoginUseCase, private signupUseCase: SignupUseCase, private userToUserDto: UserToUserDto) { }
 
   public async signup(req: Request, res: Response) {
     const { email, password } = req.body;
 
-    const createdUser = await this.signupService.execute(email, password);
+    const createdUser = await this.signupUseCase.execute(email, password);
 
     return res.status(200).json(this.userToUserDto.convert(createdUser));
   }
@@ -18,7 +17,7 @@ export default class AuthController {
   public async login(req: Request, res: Response) {
     const { email, password } = req.body;
 
-    const foundUser = await this.loginService.execute(email, password);
+    const foundUser = await this.loginUseCase.execute(email, password);
 
     return res.status(200).json(this.userToUserDto.convert(foundUser));
   }

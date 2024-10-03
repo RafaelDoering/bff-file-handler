@@ -1,8 +1,8 @@
 import jwt from 'jsonwebtoken';
 
-import Token from '../../app/ports/token';
+import UserTokenPort, { UserToken } from '../../app/ports/user-token';
 
-export default class JsonWebTokenAdapter implements Token {
+export default class JsonWebTokenAdapter implements UserTokenPort {
   private key: string;
   private expiresIn: string;
 
@@ -11,13 +11,13 @@ export default class JsonWebTokenAdapter implements Token {
     this.expiresIn = expiresIn;
   }
 
-  public encode(payload: object): string {
+  public encode(payload: UserToken): string {
     return jwt.sign(payload, this.key, {
       expiresIn: this.expiresIn,
     });
   }
 
-  public decode(token: string): object {
-    return jwt.verify(token, this.key) as object;
+  public decode(token: string): UserToken {
+    return jwt.verify(token, this.key) as UserToken;
   }
 }

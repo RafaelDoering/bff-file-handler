@@ -10,4 +10,8 @@ export default class UserRepository implements Users {
   public async findByEmail(email: string): Promise<User | undefined> {
     return UserModel.findOne({ where: { email }, raw: true });
   };
+
+  public async findById(id: number): Promise<User | undefined> {
+    return UserModel.findByPk(id, { raw: true });
+  };
 };
