@@ -2,7 +2,8 @@ import UserNotFound from '../../domain/errors/userNotFound';
 import WrongPassword from '../../domain/errors/wrongPassword';
 import User from '../../domain/user';
 import Users from '../../domain/users';
-import Cryptography from '../../utils/cryptography';
+import Cryptography from '../../utils/cryptography/cryptography';
+import Token from '../../utils/token/token';
 import LoginService from './login';
 
 const usersMock = {
@@ -15,11 +16,17 @@ const cryptographyMock = {
   compare: jest.fn()
 } as jest.Mocked<Cryptography>;
 
-const subject = new LoginService(usersMock, cryptographyMock);
+const tokenMock = {
+  encode: jest.fn(),
+  decode: jest.fn()
+} as jest.Mocked<Token>;
+
+const subject = new LoginService(usersMock, cryptographyMock, tokenMock);
 
 const ID = 1;
 const EMAIL = 'test-email';
 const PASSWORD = 'test-password';
+const TOKEN = 'test-token';
 
 const user: User = {
   id: ID,
@@ -30,12 +37,13 @@ const user: User = {
 beforeEach(() => {
   usersMock.findByEmail.mockResolvedValue(user);
   cryptographyMock.compare.mockResolvedValue(true);
+  tokenMock.encode.mockReturnValue(TOKEN);
 })
 
-test('return user when repository return user', async () => {
+test('return token when repository return user and cryptography return true', async () => {
   const result = await subject.execute(EMAIL, PASSWORD);
 
-  expect(result).toBe(user);
+  expect(result).toEqual({ ...user, token: TOKEN });
 });
 
 test('throw UserNotFound when user is not found', async () => {
