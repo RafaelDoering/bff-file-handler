@@ -1,6 +1,8 @@
 import UserNotFound from '../../domain/errors/userNotFound';
+import WrongPassword from '../../domain/errors/wrongPassword';
 import User from '../../domain/user';
 import Users from '../../domain/users';
+import Cryptography from '../../utils/cryptography';
 import LoginService from './login';
 
 const usersMock = {
@@ -8,7 +10,12 @@ const usersMock = {
   create: jest.fn()
 } as jest.Mocked<Users>;
 
-const subject = new LoginService(usersMock);
+const cryptographyMock = {
+  hash: jest.fn(),
+  compare: jest.fn()
+} as jest.Mocked<Cryptography>;
+
+const subject = new LoginService(usersMock, cryptographyMock);
 
 const ID = 1;
 const EMAIL = 'test-email';
@@ -20,8 +27,9 @@ const user: User = {
   password: PASSWORD
 };
 
-beforeAll(() => {
+beforeEach(() => {
   usersMock.findByEmail.mockResolvedValue(user);
+  cryptographyMock.compare.mockResolvedValue(true);
 })
 
 test('return user when repository return user', async () => {
@@ -36,4 +44,12 @@ test('throw UserNotFound when user is not found', async () => {
   await expect(subject.execute(EMAIL, PASSWORD))
     .rejects
     .toThrow(UserNotFound);
+});
+
+test('throw WrongPassword when compare return false', async () => {
+  cryptographyMock.compare.mockResolvedValueOnce(false);
+
+  await expect(subject.execute(EMAIL, PASSWORD))
+    .rejects
+    .toThrow(WrongPassword);
 });

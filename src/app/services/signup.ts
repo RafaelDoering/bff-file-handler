@@ -1,8 +1,9 @@
 import EmailAlreadyUsed from "../../domain/errors/emailAlreadyUsed";
 import Users from "../../domain/users";
+import Cryptography from "../../utils/bcryptjs-cryptography";
 
 export default class SignupService {
-  constructor(private userRepository: Users) { }
+  constructor(private userRepository: Users, private cryptography: Cryptography) { }
 
   public async execute(email: string, password: string) {
     const user = await this.userRepository.findByEmail(email);
@@ -10,7 +11,8 @@ export default class SignupService {
       throw new EmailAlreadyUsed;
     }
 
-    const createdUser = await this.userRepository.create(email, password);
+    const hashedPassword = await this.cryptography.hash(password);
+    const createdUser = await this.userRepository.create(email, hashedPassword);
 
     return createdUser;
   }
