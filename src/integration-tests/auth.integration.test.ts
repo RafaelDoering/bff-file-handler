@@ -1,7 +1,7 @@
 import { agent } from 'supertest';
 
-import app from './app';
-import Database from './infra/models/database';
+import app from '../app';
+import Database from '../infra/models/database';
 
 const database = new Database();
 
