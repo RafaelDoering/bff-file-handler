@@ -1,10 +1,9 @@
+import { PORT } from './env';
 import app from './app';
 
 import Database from './infra/models/database';
 
 const database = new Database();
-
-const PORT = 3001;
 
 init();
 

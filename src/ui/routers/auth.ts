@@ -8,10 +8,11 @@ import UserRepository from '../../infra/repository/user';
 import BcryptjsCryptography from "../../infra/adapters/bcryptjs";
 import JsonWebToken from "../../infra/adapters/jsonwebtoken";
 import UserToUserDto from "../converters/userToUserDto";
+import { TOKEN_EXPIRES_IN, TOKEN_PRIVATE_KEY } from "../../env";
 
 const userRepository = new UserRepository();
 const cryptography = new BcryptjsCryptography();
-const userToken = new JsonWebToken('temporary-key', '1d');
+const userToken = new JsonWebToken(TOKEN_PRIVATE_KEY, TOKEN_EXPIRES_IN);
 const userToUserDto = new UserToUserDto(userToken);
 const loginService = new LoginService(userRepository, cryptography);
 const signupService = new SignupService(userRepository, cryptography);

@@ -1,6 +1,7 @@
 import { Sequelize } from 'sequelize-typescript';
 
 import User from './user';
+import { STORAGE_PATH } from '../../env';
 
 export default class Database {
   database: Sequelize;
@@ -8,7 +9,7 @@ export default class Database {
   initialize() {
     this.database = new Sequelize({
       dialect: 'sqlite',
-      storage: './database.sqlite3',
+      storage: STORAGE_PATH,
       models: [User],
     });
   }

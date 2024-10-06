@@ -2,10 +2,7 @@ import os from 'os';
 import pino, { type Logger } from 'pino';
 
 import LoggerPort from '../../app/ports/logger';
-
-const LOG_PATH = 'logs/app.log';
-
-const isProduction = process.env.NODE_ENV === 'production';
+import { isProduction, LOG_PATH } from '../../env';
 
 export default class PinoAdapter implements LoggerPort {
   private logger: Logger;

@@ -1,11 +1,13 @@
 import swaggerAutogen from 'swagger-autogen';
 
+import { PORT } from '../src/env';
+
 const doc = {
   info: {
     title: 'bff-file-handler',
     description: 'bff-file-handler'
   },
-  host: 'localhost:3001'
+  host: `localhost:${PORT}`
 };
 
 const outputFile = './swagger-output.json';

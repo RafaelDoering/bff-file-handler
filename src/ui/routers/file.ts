@@ -5,6 +5,7 @@ import { Request } from '../http-client';
 import FileController from '../controllers/file';
 import FileToFileDto from "../converters/fileToFileDto";
 import PinoAdapter from "../../infra/adapters/pino";
+import { MAX_OF_FILES_PER_UPLOAD } from "../../env";
 
 const fileToFileDto = new FileToFileDto();
 const logger = new PinoAdapter();
@@ -16,8 +17,6 @@ const ALLOWED_FILE_TYPES = [
   'text/csv'
 ]
 
-const MAX_OF_FILES = 10;
-
 const upload = multer({
   dest: './uploads/',
   fileFilter: function (req, file, cb) {
@@ -27,7 +26,7 @@ const upload = multer({
 
 router.post(
   "/upload",
-  upload.array('files', MAX_OF_FILES),
+  upload.array('files', MAX_OF_FILES_PER_UPLOAD),
   (req, res) => fileController.upload(req as Request, res) as unknown as void,
 );
 
