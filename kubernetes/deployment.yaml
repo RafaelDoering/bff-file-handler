@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bff-file-handler
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bff-file-handler
+  template:
+    metadata:
+      labels:
+        app: bff-file-handler
+    spec:
+      containers:
+      - name: bff-file-handler
+        image: bff-file-handler:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 3001
+        resources:
+          limits:
+            cpu: 0.2
+            memory: 200Mi
+          requests:
+            cpu: 0.2
+            memory: 100Mi

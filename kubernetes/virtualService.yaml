@@ -1,0 +1,18 @@
+apiVersion: networking.istio.io/v1
+kind: VirtualService
+metadata:
+  name: bff-file-handler
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - bff-file-handler-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /
+    route:
+    - destination:
+        host: bff-file-handler
+        port:
+          number: 3001

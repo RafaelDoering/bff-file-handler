@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: bff-file-handler
+  labels:
+    app: bff-file-handler
+    service: bff-file-handler
+spec:
+  selector:
+    app: bff-file-handler
+  ports:
+  - port: 3001
+    name: http
