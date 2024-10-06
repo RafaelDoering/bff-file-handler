@@ -18,6 +18,12 @@ spec:
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 3001
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 3001
+          initialDelaySeconds: 10
+          periodSeconds: 5
         resources:
           limits:
             cpu: 0.2
