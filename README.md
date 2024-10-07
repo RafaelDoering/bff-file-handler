@@ -4,6 +4,20 @@
 An application for file uploads.
 </p>
 
+## 📊 Features
+| Feature | Description | Status |
+| :-: | :-: | :-: |
+| **File Handling and Storage** | The service will expose a public RESTful endpoint to securely handle multipart/form-data uploads of ~250MB CSV files and write them to disk efficiently. | Done, there is one endpoint for uploading and another for deleting files, both with authorization. The writing is made with multer. |
+| **Dynamic Throttling** | Implement a dynamic rate limiter that adjusts the allowed request rate based on real-time system metrics, such as CPU pressure and available memory. | In progress |
+| **Health Endpoint** | Expose a health endpoint that reports on the system's CPU pressure, available memory, and the health status of all external dependencies. | In progress |
+| **Resiliency and Fault Tolerance** | Use circuit breaker patterns and implement retries with exponential backoff to handle downstream failures and transient errors. | In progress |
+| **Testing** | Conduct unit and integration tests to ensure the service can handle concurrent uploads of 250MB CSV files, dynamic throttling works as intended, and the system remains resilient during failures. | In progress |
+| **Rate Limiting and Concurrency** | Apply a rate limiter to prevent more than 1 request per 10 seconds per client and ensure no more than 5 concurrent file processing operations. | In progress |
+| **Authentication** | Secure endpoints with Basic Authentication and ensure the secure management of credentials. | Done with email, password authentication. |
+| **Performance Metrics and Logging** | Implement structured logging to provide detailed metrics and logs for each file upload, correlating them with request IDs. | In progress |
+| **Documentation** | Provide clear documentation covering endpoint usage, expected behavior under load, and error handling. | In progress |
+| **Operations** | Optionally, create packaging instructions and deployment templates for CI/CD. | Partially done with github actions CI for running tests |
+
 ## ⌨️ Commands
 | Command | Description |
 | :-: | :-: |
