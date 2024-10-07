@@ -56,9 +56,9 @@ This application has swagger running on http://localhost:3001/docs
 
 | Layer | Responsibility |
 | :-: | :-:|
-| __app__ | Applications login |
+| __app__ | Application layer |
 | __domain__ | Domain models |
-| __infra__ | Infrastructure |
+| __infra__ | Adapters for the application and domain layer interfaces |
 | __ui__ | Interface with the outside word |
 
 ## TODO
