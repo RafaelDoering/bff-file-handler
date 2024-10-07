@@ -9,7 +9,7 @@ An application for file uploads.
 | :-: | :-: | :-: |
 | **File Handling and Storage** | The service will expose a public RESTful endpoint to securely handle multipart/form-data uploads of ~250MB CSV files and write them to disk efficiently. | Done, there is one endpoint for uploading and another for deleting files, both with authorization. The writing is made with multer. |
 | **Dynamic Throttling** | Implement a dynamic rate limiter that adjusts the allowed request rate based on real-time system metrics, such as CPU pressure and available memory. | In progress |
-| **Health Endpoint** | Expose a health endpoint that reports on the system's CPU pressure, available memory, and the health status of all external dependencies. | In progress |
+| **Health Endpoint** | Expose a health endpoint that reports on the system's CPU pressure, available memory, and the health status of all external dependencies. | Done, its the /health endpoint |
 | **Resiliency and Fault Tolerance** | Use circuit breaker patterns and implement retries with exponential backoff to handle downstream failures and transient errors. | Done only for incoming requests using kubernetes |
 | **Testing** | Conduct unit and integration tests to ensure the service can handle concurrent uploads of 250MB CSV files, dynamic throttling works as intended, and the system remains resilient during failures. | Partially done, there is unit and integration tests for the file upload, delete, signup and login. There is also a simple load test using k6 |
 | **Rate Limiting and Concurrency** | Apply a rate limiter to prevent more than 1 request per 10 seconds per client and ensure no more than 5 concurrent file processing operations. | In progress |
@@ -60,3 +60,11 @@ This application has swagger running on http://localhost:3001/docs
 | __domain__ | Domain models |
 | __infra__ | Infrastructure |
 | __ui__ | Interface with the outside word |
+
+## TODO
+
+- Dynamic Throttling
+- Error handling is very minimal
+- CD Pipeline
+- Upload files to some global storage (now is only on each server)
+- Get of a file
