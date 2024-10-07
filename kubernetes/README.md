@@ -12,15 +12,16 @@
 4. `eval $(minikube docker-env)` - Make minikube see local docker images
 5. `docker build -t bff-file-handler .` - Build the application
 6. `istioctl install --set profile=demo --namespace bff-file-handler` - Install istio ingress, engress, etc
-7. `kubectl apply -f kubernetes/ --namespace bff-file-handler` - Create project infrastructure
-8. `minikube tunnel` - Tunnel minikube network
-9. Open another terminal and export
+7. `minikube addons enable metrics-server` - Enable metrics for the HPA
+8. `kubectl apply -f kubernetes/ --namespace bff-file-handler` - Create project infrastructure
+9. `minikube tunnel` - Tunnel minikube network
+10. Open another terminal and export
 `export INGRESS_NAME=istio-ingressgateway`
 `export INGRESS_NS=istio-system`
 `export INGRESS_HOST=$(kubectl -n "$INGRESS_NS" get service "$INGRESS_NAME" -o jsonpath='{.status.loadBalancer.ingress[0].ip}')`
 `export INGRESS_PORT=$(kubectl -n "$INGRESS_NS" get service "$INGRESS_NAME" -o jsonpath='{.spec.ports[?(@.name=="http2")].port}')`
 `export GATEWAY_URL=$INGRESS_HOST:$INGRESS_PORT`
-10. `echo "http://${GATEWAY_URL}/"` - Get the application url
+11. `echo "http://${GATEWAY_URL}/"` - Get the application url
 
 ## ↓ Cleanup
 1. If you want to only delete the namespace, run `kubectl delete namespace bff-file-handler`
