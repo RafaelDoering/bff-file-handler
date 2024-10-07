@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import { Request } from '../http-client';
+import { Request, Response } from '../http-client';
 import AuthController from '../controllers/auth';
 import SignupService from '../../app/use-cases/signup';
 import LoginService from '../../app/use-cases/login';
@@ -22,12 +22,12 @@ const router = Router();
 
 router.post(
   "/signup",
-  (req, res) => authController.signup(req as Request, res) as unknown as void,
+  (req: Request, res: Response) => authController.signup(req, res) as unknown as void,
 );
 
 router.post(
   "/login",
-  (req, res) => authController.login(req as Request, res) as unknown as void,
+  (req: Request, res: Response) => authController.login(req, res) as unknown as void,
 );
 
 export default router;

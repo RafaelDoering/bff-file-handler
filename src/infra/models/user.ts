@@ -6,7 +6,8 @@ import User from '../../domain/user';
 export default class UserModel extends Model implements User {
   @Column({
     type: DataType.INTEGER,
-    primaryKey: true
+    primaryKey: true,
+    autoIncrement: true,
   })
   id: number;
 

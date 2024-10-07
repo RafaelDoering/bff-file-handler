@@ -11,6 +11,16 @@
     "http"
   ],
   "paths": {
+    "/health/": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/auth/signup": {
       "post": {
         "description": "",

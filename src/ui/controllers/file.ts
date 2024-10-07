@@ -4,9 +4,11 @@ import type { Request, Response } from "../http-client";
 import FileToFileDto from '../converters/fileToFileDto';
 import FileDto from '../dtos/file';
 import LoggerPort from '../../app/ports/logger';
+import AddFileUseCase from '../../app/use-cases/add-files';
+import DeleteFilesUseCase from '../../app/use-cases/delete-files';
 
 export default class FileController {
-  constructor(private fileToFileDto: FileToFileDto, private logger: LoggerPort) { }
+  constructor(private addFilesUseCase: AddFileUseCase, private deleteFilesUseCase: DeleteFilesUseCase, private fileToFileDto: FileToFileDto, private logger: LoggerPort) { }
 
   public async upload(req: Request, res: Response) {
     const files = req.files;
@@ -15,9 +17,13 @@ export default class FileController {
       return res.status(500).json();
     }
 
-    for (const file of files) {
-      this.logger.info(file.path);
+    const paths: string[] = [];
+    for (const { path } of files) {
+      this.logger.info(path);
+      paths.push(path);
     }
+
+    await this.addFilesUseCase.execute(paths, req.user);
 
     return res.status(200).json(this.fileToFileDto.convertArray(files));
   }
@@ -25,9 +31,13 @@ export default class FileController {
   public async delete(req: Request, res: Response) {
     const files = req.body as FileDto[];
 
-    for (const file of files) {
-      fs.rmSync(file.path);
+    const paths: string[] = [];
+    for (const { path } of files) {
+      fs.rmSync(path);
+      paths.push(path);
     }
+
+    await this.deleteFilesUseCase.execute(paths, req.user);
 
     return res.status(200).json();
   }
