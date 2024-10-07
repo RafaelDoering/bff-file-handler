@@ -39,7 +39,7 @@ function formatFileName(req: Request, file: File, callback: FormatFileNameCallba
 
 const upload = multer({
   storage: storage,
-  limits: { fileSize: megaBytesToBytes(200) },
+  limits: { fileSize: megaBytesToBytes(300) },
   fileFilter: fileFilter
 });
 

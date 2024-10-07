@@ -19,7 +19,7 @@ export default class FileController {
 
     const paths: string[] = [];
     for (const { path } of files) {
-      this.logger.info(path);
+      this.logger.info(`File ${path} uploaded by ${req.user.email}`);
       paths.push(path);
     }
 
