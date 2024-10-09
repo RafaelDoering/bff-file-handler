@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import { Request, Response, validateBody } from '../http-client';
+import { Request, Response } from '../http-client';
 import AuthController from '../controllers/auth';
 import SignupService from '../../app/use-cases/signup';
 import LoginService from '../../app/use-cases/login';
@@ -10,6 +10,8 @@ import JsonWebToken from "../../infra/adapters/jsonwebtoken";
 import UserToUserDto from "../converters/userToUserDto";
 import { TOKEN_EXPIRES_IN, TOKEN_PRIVATE_KEY } from "../../env";
 import validate from "../middlewares/validation";
+import EmailValidator from "../../util/validators/email-validator";
+import StringValidator from "../../util/validators/string-validator";
 
 const userRepository = new UserRepository();
 const cryptography = new BcryptjsCryptography();
@@ -22,8 +24,8 @@ const authController = new AuthController(loginService, signupService, userToUse
 const router = Router();
 
 const SIGNUP_SCHEMA = [
-  validateBody('email').isEmail().withMessage('Email must be valid'),
-  validateBody('password').isLength({ min: 6 }).withMessage('Password must have at least 6 characters'),
+  ...new EmailValidator().body('email'),
+  ...new StringValidator().body('password', { min: 6 }),
 ];
 router.post(
   "/signup",
@@ -32,8 +34,8 @@ router.post(
 );
 
 const LOGIN_SCHEMA = [
-  validateBody('email').isEmail().withMessage('Email must be valid'),
-  validateBody('password').isLength({ min: 6 }).withMessage('Password must have at least 6 characters'),
+  ...new EmailValidator().body('email'),
+  ...new StringValidator().body('password', { min: 6 }),
 ];
 router.post(
   "/login",
