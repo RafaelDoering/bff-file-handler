@@ -27,7 +27,6 @@ export default class FileController {
     await this.addFilesUseCase.execute(paths, req.user);
 
     res.status(StatusCode.OK).json(this.fileToFileDto.convertArray(files));
-    return;
   }
 
   public async delete(req: Request, res: Response) {
@@ -42,6 +41,5 @@ export default class FileController {
     await this.deleteFilesUseCase.execute(paths, req.user);
 
     res.status(StatusCode.OK).json();
-    return;
   }
 }

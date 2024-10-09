@@ -11,7 +11,7 @@ export default class AuthController {
 
     const createdUser = await this.signupUseCase.execute(email, password);
 
-    return res.status(StatusCode.OK).json(this.userToUserDto.convert(createdUser));
+    res.status(StatusCode.OK).json(this.userToUserDto.convert(createdUser));
   }
 
   public async login(req: Request, res: Response) {
@@ -19,6 +19,6 @@ export default class AuthController {
 
     const foundUser = await this.loginUseCase.execute(email, password);
 
-    return res.status(StatusCode.OK).json(this.userToUserDto.convert(foundUser));
+    res.status(StatusCode.OK).json(this.userToUserDto.convert(foundUser));
   }
 }

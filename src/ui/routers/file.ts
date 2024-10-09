@@ -35,7 +35,6 @@ const DELETE_FILES_SCHEMA = [
   validateBody('files').isArray({ min: 1 }).withMessage('Files need to have at least one item'),
   validateBody('files.*.path').notEmpty().isString().withMessage('File path must be a string'),
 ];
-
 router.delete(
   "/",
   [

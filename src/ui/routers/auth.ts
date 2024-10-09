@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import { Request, Response } from '../http-client';
+import { Request, Response, validateBody } from '../http-client';
 import AuthController from '../controllers/auth';
 import SignupService from '../../app/use-cases/signup';
 import LoginService from '../../app/use-cases/login';
@@ -9,6 +9,7 @@ import BcryptjsCryptography from "../../infra/adapters/bcryptjs";
 import JsonWebToken from "../../infra/adapters/jsonwebtoken";
 import UserToUserDto from "../converters/userToUserDto";
 import { TOKEN_EXPIRES_IN, TOKEN_PRIVATE_KEY } from "../../env";
+import validate from "../middlewares/validation";
 
 const userRepository = new UserRepository();
 const cryptography = new BcryptjsCryptography();
@@ -20,14 +21,24 @@ const authController = new AuthController(loginService, signupService, userToUse
 
 const router = Router();
 
+const SIGNUP_SCHEMA = [
+  validateBody('email').isEmail().withMessage('Email must be valid'),
+  validateBody('password').isLength({ min: 6 }).withMessage('Password must have at least 6 characters'),
+];
 router.post(
   "/signup",
-  (req: Request, res: Response) => authController.signup(req, res) as unknown as void,
+  validate(SIGNUP_SCHEMA),
+  (req: Request, res: Response) => authController.signup(req, res),
 );
 
+const LOGIN_SCHEMA = [
+  validateBody('email').isEmail().withMessage('Email must be valid'),
+  validateBody('password').isLength({ min: 6 }).withMessage('Password must have at least 6 characters'),
+];
 router.post(
   "/login",
-  (req: Request, res: Response) => authController.login(req, res) as unknown as void,
+  validate(LOGIN_SCHEMA),
+  (req: Request, res: Response) => authController.login(req, res),
 );
 
 export default router;
