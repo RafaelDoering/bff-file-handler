@@ -1,4 +1,5 @@
 import { NextFunction as ExpressNextFunction, Request as ExpressRequest, Response as ExpressResponse } from "express";
+import { body } from 'express-validator';
 import {
   ReasonPhrases,
   StatusCodes,
@@ -15,3 +16,4 @@ export interface Next extends ExpressNextFunction { };
 export interface File extends Express.Multer.File { };
 export const StatusCodeReason = ReasonPhrases;
 export const StatusCode = StatusCodes;
+export const validateBody = body;

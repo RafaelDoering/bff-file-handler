@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import { Request, Response } from '../http-client';
+import { Request, Response, validateBody } from '../http-client';
 import FileController from '../controllers/file';
 import FileToFileDto from "../converters/fileToFileDto";
 import PinoAdapter from "../../infra/adapters/pino";
@@ -10,6 +10,7 @@ import FileRepository from "../../infra/repository/file";
 import DeleteFilesUseCase from "../../app/use-cases/delete-files";
 import authenticate from "../middlewares/auth";
 import uploadFiles from "../middlewares/upload-files";
+import validate from "../middlewares/validation";
 
 const ALLOWED_MIME_TYPES = ['text/csv'];
 const MAX_MEGABYTES_PER_FILE = 300;
@@ -30,9 +31,17 @@ router.post(
   (req: Request, res: Response) => fileController.upload(req, res),
 );
 
+const DELETE_FILES_SCHEMA = [
+  validateBody('files').isArray({ min: 1 }).withMessage('Files need to have at least one item'),
+  validateBody('files.*.path').notEmpty().isString().withMessage('File path must be a string'),
+];
+
 router.delete(
   "/",
-  authenticate,
+  [
+    authenticate,
+    validate(DELETE_FILES_SCHEMA)
+  ],
   (req: Request, res: Response) => fileController.delete(req, res),
 );
 

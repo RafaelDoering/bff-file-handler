@@ -10,7 +10,7 @@ function formatFileName(file: File) {
   return `${Date.now()}-${file.originalname}`;
 }
 
-export default (allowedMimeTypes: string[], maxOfFilesPerUpload: number, maxMegabytesPerFile: number) => {
+export default function uploadFiles(allowedMimeTypes: string[], maxOfFilesPerUpload: number, maxMegabytesPerFile: number) {
   const storage = multer.diskStorage({
     destination: './uploads',
     filename: filename,
