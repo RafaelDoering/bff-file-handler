@@ -14,7 +14,8 @@ export default class FileController {
     const files = req.files;
 
     if (files.length <= 0) {
-      return res.status(500).json();
+      res.status(500).json();
+      return;
     }
 
     const paths: string[] = [];
@@ -25,7 +26,8 @@ export default class FileController {
 
     await this.addFilesUseCase.execute(paths, req.user);
 
-    return res.status(200).json(this.fileToFileDto.convertArray(files));
+    res.status(200).json(this.fileToFileDto.convertArray(files));
+    return;
   }
 
   public async delete(req: Request, res: Response) {
@@ -39,6 +41,7 @@ export default class FileController {
 
     await this.deleteFilesUseCase.execute(paths, req.user);
 
-    return res.status(200).json();
+    res.status(200).json();
+    return;
   }
 }
