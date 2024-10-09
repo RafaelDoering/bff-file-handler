@@ -1,6 +1,6 @@
 import fs from 'fs';
 
-import type { Request, Response } from "../http-client";
+import { StatusCode, type Request, type Response } from "../http-client";
 import FileToFileDto from '../converters/fileToFileDto';
 import FileDto from '../dtos/file';
 import LoggerPort from '../../app/ports/logger';
@@ -14,7 +14,7 @@ export default class FileController {
     const files = req.files;
 
     if (files.length <= 0) {
-      res.status(500).json();
+      res.status(StatusCode.INTERNAL_SERVER_ERROR).json();
       return;
     }
 
@@ -26,7 +26,7 @@ export default class FileController {
 
     await this.addFilesUseCase.execute(paths, req.user);
 
-    res.status(200).json(this.fileToFileDto.convertArray(files));
+    res.status(StatusCode.OK).json(this.fileToFileDto.convertArray(files));
     return;
   }
 
@@ -41,7 +41,7 @@ export default class FileController {
 
     await this.deleteFilesUseCase.execute(paths, req.user);
 
-    res.status(200).json();
+    res.status(StatusCode.OK).json();
     return;
   }
 }

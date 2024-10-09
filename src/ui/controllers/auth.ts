@@ -1,4 +1,4 @@
-import type { Request, Response } from "../http-client";
+import { StatusCode, type Request, type Response } from "../http-client";
 import LoginUseCase from "../../app/use-cases/login";
 import SignupUseCase from "../../app/use-cases/signup";
 import UserToUserDto from "../converters/userToUserDto";
@@ -11,7 +11,7 @@ export default class AuthController {
 
     const createdUser = await this.signupUseCase.execute(email, password);
 
-    return res.status(200).json(this.userToUserDto.convert(createdUser));
+    return res.status(StatusCode.OK).json(this.userToUserDto.convert(createdUser));
   }
 
   public async login(req: Request, res: Response) {
@@ -19,6 +19,6 @@ export default class AuthController {
 
     const foundUser = await this.loginUseCase.execute(email, password);
 
-    return res.status(200).json(this.userToUserDto.convert(foundUser));
+    return res.status(StatusCode.OK).json(this.userToUserDto.convert(foundUser));
   }
 }
