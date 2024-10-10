@@ -3,8 +3,8 @@ import Users from "../../domain/users";
 import UserModel from "../models/user";
 
 export default class UserRepository implements Users {
-  public async create(email: string, password: string): Promise<User> {
-    return (await UserModel.create({ email, password })).dataValues;
+  public async create(email: string, password: string, avatar: string): Promise<User> {
+    return (await UserModel.create({ email, password, avatar })).dataValues;
   };
 
   public async findByEmail(email: string): Promise<User | undefined> {

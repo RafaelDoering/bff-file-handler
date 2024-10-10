@@ -10,6 +10,7 @@ export default class UserToUserDto {
       id: user.id,
       email: user.email,
       token: this.userToken.encode({ id: user.id }),
+      avatar: user.avatar,
     };
   }
 }

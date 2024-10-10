@@ -25,7 +25,8 @@ const PASSWORD = 'test-password';
 const user: User = {
   id: ID,
   email: EMAIL,
-  password: PASSWORD
+  password: PASSWORD,
+  avatar: EMAIL
 };
 
 beforeEach(() => {

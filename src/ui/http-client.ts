@@ -15,3 +15,9 @@ export interface Next extends ExpressNextFunction { };
 export interface File extends Express.Multer.File { };
 export const StatusCodeReason = ReasonPhrases;
 export const StatusCode = StatusCodes;
+export class HttpError implements Error {
+  name: string;
+  message: string;
+  status: StatusCodes;
+  stack?: string;
+};
