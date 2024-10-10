@@ -15,7 +15,7 @@ An application for file uploads.
 | **Rate Limiting and Concurrency** | Apply a rate limiter to prevent more than 1 request per 10 seconds per client and ensure no more than 5 concurrent file processing operations. | Done in the limit-concurrent-requets middleware |
 | **Authentication** | Secure endpoints with Basic Authentication and ensure the secure management of credentials. | Done with email, password authentication. |
 | **Performance Metrics and Logging** | Implement structured logging to provide detailed metrics and logs for each file upload, correlating them with request IDs. | Done, there is a log for the file upload correlating the file with the user email |
-| **Documentation** | Provide clear documentation covering endpoint usage, expected behavior under load, and error handling. | In progress |
+| **Documentation** | Provide clear documentation covering endpoint usage, expected behavior under load, and error handling. | Done |
 | **Operations** | Optionally, create packaging instructions and deployment templates for CI/CD. | Partially done with github actions CI for running tests |
 
 ## ⌨️ Commands
@@ -61,10 +61,12 @@ This application has swagger running on http://localhost:3001/docs
 | __infra__ | Adapters for the application and domain layer interfaces |
 | __ui__ | Interface with the outside word |
 
+## Error handling
+
+There is a global error handler that return a internal server error for untreated exceptions, also there is some other error, including body validation and open circuit breaker.
+
 ## TODO
 
-- Dynamic Throttling
-- Error handling is very minimal
 - CD Pipeline
 - Upload files to some global storage (now is only on each server)
 - Get of a file
