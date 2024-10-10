@@ -5,8 +5,11 @@ import docsRouter from './ui/routers/docs';
 import healthRouter from './ui/routers/health';
 import authRouter from './ui/routers/auth';
 import fileRouter from './ui/routers/file';
+import rateLimiter from './ui/middlewares/rate-limiter';
 
 const app = express();
+
+app.use(rateLimiter);
 
 app.use(bodyParser.json());
 
