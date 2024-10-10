@@ -13,6 +13,7 @@ import uploadFiles from "../middlewares/upload-files";
 import validate from "../middlewares/validation";
 import StringValidator from "../../util/validators/string-validator";
 import ArrayValidator from "../../util/validators/array-validator";
+import limitConcurrentRequests from "../middlewares/limit-concurrent-requets";
 
 const ALLOWED_MIME_TYPES = ['text/csv'];
 const MAX_MEGABYTES_PER_FILE = 300;
@@ -28,8 +29,11 @@ const router = Router();
 
 router.post(
   "/upload",
-  authenticate,
-  uploadFiles(ALLOWED_MIME_TYPES, MAX_OF_FILES_PER_UPLOAD, MAX_MEGABYTES_PER_FILE),
+  [
+    limitConcurrentRequests,
+    authenticate,
+    uploadFiles(ALLOWED_MIME_TYPES, MAX_OF_FILES_PER_UPLOAD, MAX_MEGABYTES_PER_FILE),
+  ],
   (req: Request, res: Response) => fileController.upload(req, res),
 );
 
