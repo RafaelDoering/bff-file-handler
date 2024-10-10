@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import { Request, Response } from '../http-client';
+import { Next, Request, Response } from '../http-client';
 import AuthController from '../controllers/auth';
 import SignupService from '../../app/use-cases/signup';
 import LoginService from '../../app/use-cases/login';
@@ -32,7 +32,7 @@ const SIGNUP_SCHEMA = [
 router.post(
   "/signup",
   validate(SIGNUP_SCHEMA),
-  (req: Request, res: Response) => authController.signup(req, res),
+  (req: Request, res: Response, next: Next) => authController.signup(req, res, next),
 );
 
 const LOGIN_SCHEMA = [
@@ -42,7 +42,7 @@ const LOGIN_SCHEMA = [
 router.post(
   "/login",
   validate(LOGIN_SCHEMA),
-  (req: Request, res: Response) => authController.login(req, res),
+  (req: Request, res: Response, next: Next) => authController.login(req, res, next),
 );
 
 export default router;

@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import { Request, Response } from '../http-client';
+import { Next, Request, Response } from '../http-client';
 import FileController from '../controllers/file';
 import FileToFileDto from "../converters/fileToFileDto";
 import PinoAdapter from "../../infra/adapters/pino";
@@ -34,7 +34,7 @@ router.post(
     authenticate,
     uploadFiles(ALLOWED_MIME_TYPES, MAX_OF_FILES_PER_UPLOAD, MAX_MEGABYTES_PER_FILE),
   ],
-  (req: Request, res: Response) => fileController.upload(req, res),
+  (req: Request, res: Response, next: Next) => fileController.upload(req, res, next),
 );
 
 const DELETE_FILES_SCHEMA = [
@@ -47,7 +47,7 @@ router.delete(
     authenticate,
     validate(DELETE_FILES_SCHEMA)
   ],
-  (req: Request, res: Response) => fileController.delete(req, res),
+  (req: Request, res: Response, next: Next) => fileController.delete(req, res, next),
 );
 
 export default router;
