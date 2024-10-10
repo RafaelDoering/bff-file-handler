@@ -5,7 +5,8 @@ import AuthController from '../controllers/auth';
 import SignupService from '../../app/use-cases/signup';
 import LoginService from '../../app/use-cases/login';
 import UserRepository from '../../infra/repository/user';
-import BcryptjsCryptography from "../../infra/adapters/bcryptjs";
+import BcryptjsAdapter from "../../infra/adapters/bcryptjs";
+import GravatarAdapter from "../../infra/adapters/gravatar";
 import JsonWebToken from "../../infra/adapters/jsonwebtoken";
 import UserToUserDto from "../converters/userToUserDto";
 import { TOKEN_EXPIRES_IN, TOKEN_PRIVATE_KEY } from "../../env";
@@ -14,11 +15,12 @@ import EmailValidator from "../../util/validators/email-validator";
 import StringValidator from "../../util/validators/string-validator";
 
 const userRepository = new UserRepository();
-const cryptography = new BcryptjsCryptography();
+const cryptography = new BcryptjsAdapter();
+const avatar = new GravatarAdapter();
 const userToken = new JsonWebToken(TOKEN_PRIVATE_KEY, TOKEN_EXPIRES_IN);
 const userToUserDto = new UserToUserDto(userToken);
 const loginService = new LoginService(userRepository, cryptography);
-const signupService = new SignupService(userRepository, cryptography);
+const signupService = new SignupService(userRepository, cryptography, avatar);
 const authController = new AuthController(loginService, signupService, userToUserDto);
 
 const router = Router();

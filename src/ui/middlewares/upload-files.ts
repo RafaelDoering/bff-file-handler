@@ -12,7 +12,7 @@ function formatFileName(file: File) {
 
 export default function uploadFiles(allowedMimeTypes: string[], maxOfFilesPerUpload: number, maxMegabytesPerFile: number) {
   const storage = multer.diskStorage({
-    destination: './uploads',
+    destination: './public/files',
     filename: filename,
   });
 
