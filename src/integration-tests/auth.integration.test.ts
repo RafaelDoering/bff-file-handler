@@ -3,17 +3,20 @@ import { agent } from 'supertest';
 import app from '../app';
 import Database from '../infra/models/database';
 
+jest.mock('../infra/adapters/gravatar', () => {
+  return jest.fn().mockImplementation(() => {
+    return {
+      get: jest.fn().mockResolvedValue('gravatar-get'),
+    };
+  });
+});
+
 const database = new Database();
 
-const EMAIL = 'test@email.com';
+const EMAIL = 'auth-integration@email.com';
 const PASSWORD = 'test-password';
 
 describe("POST /auth/signup", () => {
-  beforeAll(async () => {
-    database.initialize();
-    await database.reset();
-  })
-
   it("should return email and token when data is valid", async () => {
     const response = await agent(app)
       .post("/auth/signup")

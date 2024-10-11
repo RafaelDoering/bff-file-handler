@@ -35,7 +35,7 @@ export default class FileController {
 
   public async delete(req: Request, res: Response, next: Next) {
     try {
-      const files = req.body as FileDto[];
+      const files = req.body.files as FileDto[];
 
       const paths: string[] = [];
       for (const { path } of files) {

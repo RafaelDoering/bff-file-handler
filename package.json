@@ -6,7 +6,8 @@
     "dev": "nodemon ./src/server.ts",
     "build": "tsc",
     "start": "node ./build/src/server.js",
-    "test": "jest",
+    "test-unit": "jest unit",
+    "test-integration": "jest integration --setupFilesAfterEnv '<rootDir>/src/test-setup.ts'",
     "swagger": "tsx ./scripts/swagger.js"
   },
   "author": "",
