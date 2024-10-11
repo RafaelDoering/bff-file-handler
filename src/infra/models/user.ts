@@ -20,4 +20,8 @@ export default class UserModel extends Model implements User {
   @AllowNull(false)
   @Column(DataType.STRING)
   password: string;
+
+  @AllowNull(false)
+  @Column(DataType.STRING)
+  avatar: string;
 }

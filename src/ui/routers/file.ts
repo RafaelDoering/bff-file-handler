@@ -1,7 +1,6 @@
 import { Router } from "express";
-import multer from 'multer';
 
-import { Request, Response } from '../http-client';
+import { Next, Request, Response } from '../http-client';
 import FileController from '../controllers/file';
 import FileToFileDto from "../converters/fileToFileDto";
 import PinoAdapter from "../../infra/adapters/pino";
@@ -10,10 +9,14 @@ import AddFilesUseCase from "../../app/use-cases/add-files";
 import FileRepository from "../../infra/repository/file";
 import DeleteFilesUseCase from "../../app/use-cases/delete-files";
 import authenticate from "../middlewares/auth";
+import uploadFiles from "../middlewares/upload-files";
+import validate from "../middlewares/validation";
+import StringValidator from "../../util/validators/string-validator";
+import ArrayValidator from "../../util/validators/array-validator";
+import limitConcurrentRequests from "../middlewares/limit-concurrent-requets";
 
-interface File extends Express.Multer.File { };
-type FilterFileCallback = (error: null, acceptFile: boolean) => void;
-type FormatFileNameCallback = (error: Error | null, filename: string) => void;
+const ALLOWED_MIME_TYPES = ['text/csv'];
+const MAX_MEGABYTES_PER_FILE = 300;
 
 const fileRepository = new FileRepository();
 const addFilesUseCase = new AddFilesUseCase(fileRepository);
@@ -24,48 +27,27 @@ const fileController = new FileController(addFilesUseCase, deleteFilesUseCase, f
 
 const router = Router();
 
-const ALLOWED_MIME_TYPES = [
-  'text/csv',
-];
-
-const storage = multer.diskStorage({
-  destination: './uploads',
-  filename: formatFileName
-});
-
-function formatFileName(req: Request, file: File, callback: FormatFileNameCallback) {
-  callback(null, `${Date.now()}-${file.originalname}`);
-}
-
-const upload = multer({
-  storage: storage,
-  limits: { fileSize: megaBytesToBytes(300) },
-  fileFilter: fileFilter
-});
-
-function megaBytesToBytes(megaBytes: number) {
-  return megaBytes * 1024 * 1024;
-}
-
-function fileFilter(req: Request, file: File, callback: FilterFileCallback) {
-  if (ALLOWED_MIME_TYPES.includes(file.mimetype)) {
-    callback(null, true);
-  } else {
-    callback(null, false);
-  }
-};
-
 router.post(
   "/upload",
-  authenticate,
-  upload.array('files', MAX_OF_FILES_PER_UPLOAD),
-  (req: Request, res: Response) => fileController.upload(req, res) as unknown as void,
+  [
+    limitConcurrentRequests,
+    authenticate,
+    uploadFiles(ALLOWED_MIME_TYPES, MAX_OF_FILES_PER_UPLOAD, MAX_MEGABYTES_PER_FILE),
+  ],
+  (req: Request, res: Response, next: Next) => fileController.upload(req, res, next),
 );
 
+const DELETE_FILES_SCHEMA = [
+  ...new ArrayValidator().body('files', { min: 1 }),
+  ...new StringValidator().body('files.*.path'),
+];
 router.delete(
   "/",
-  authenticate,
-  (req: Request, res: Response) => fileController.delete(req, res) as unknown as void,
+  [
+    authenticate,
+    validate(DELETE_FILES_SCHEMA)
+  ],
+  (req: Request, res: Response, next: Next) => fileController.delete(req, res, next),
 );
 
 export default router;

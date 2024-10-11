@@ -10,10 +10,14 @@ const filesMock = {
 
 const subject = new AddFileUseCase(filesMock);
 
+const ID = 1;
+const EMAIL = 'test-email';
+const PASSWORD = 'test-password';
 const user: User = {
-  id: 1,
-  email: 'test-email',
-  password: 'test-password',
+  id: ID,
+  email: EMAIL,
+  password: PASSWORD,
+  avatar: EMAIL
 };
 
 const file: File = {
